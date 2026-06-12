@@ -97,7 +97,7 @@ git rm -r --cached tmp
 
 ## Struttura del progetto
 
-```
+```text
 Agent_GestioneTicket/
 ├── agents/             # Definizione e logica degli agenti
 ├── database/           # Gestione dati e persistenza
