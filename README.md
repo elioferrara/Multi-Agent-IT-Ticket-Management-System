@@ -60,7 +60,7 @@ GROQ_API_KEY=la-tua-chiave-qui
 ```
 
 Il file `.env` è già in [.gitignore](.gitignore): non verrà committato.
-gestione_ticket.py(gestione_ticket.py) lo carica automaticamente con `python-dotenv` prima di importare Agno.
+[gestione_ticket.py](gestione_ticket.py) lo carica automaticamente con `python-dotenv` prima di importare Agno.
 
 ## 5. Avviare il bot
 
