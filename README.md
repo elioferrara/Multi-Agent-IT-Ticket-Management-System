@@ -22,7 +22,7 @@ uv init .
 
 Questo crea `pyproject.toml`, `.python-version` e gli altri file base.
 
-`uv init` genera anche un `main.py` di esempio: puoi cancellarlo, non viene usato dal progetto (il punto di ingresso è [recipebot.py](recipebot.py)).
+`uv init` genera anche un `main.py` di esempio: puoi cancellarlo, non viene usato dal progetto (il punto di ingresso è [gestione_ticket.py](gestione_ticket.py)).
 
 ## 3. Creare il virtual environment e installare le dipendenze
 
@@ -60,7 +60,7 @@ GROQ_API_KEY=la-tua-chiave-qui
 ```
 
 Il file `.env` è già in [.gitignore](.gitignore): non verrà committato.
-[recipebot.py](recipebot.py) lo carica automaticamente con `python-dotenv` prima di importare Agno.
+gestione_ticket.py(gestione_ticket.py) lo carica automaticamente con `python-dotenv` prima di importare Agno.
 
 ## 5. Avviare il bot
 
@@ -83,7 +83,7 @@ Al primo avvio l'agente:
 
 ## Escludere `tmp/` da git
 
-La cartella `tmp/` contiene stato runtime (db SQLite, vector store LanceDB, `shopping_list.json`) che non va versionato. Aggiungi al [.gitignore](.gitignore):
+La cartella `tmp/` contiene stato runtime che non va versionato. Aggiungi al [.gitignore](.gitignore):
 
 ```gitignore
 tmp/**
