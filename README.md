@@ -117,9 +117,4 @@ Agent_GestioneTicket/
 - **`GOOGLE_API_KEY` non trovata**: verifica che `.env` esista nella stessa cartella da cui lanci `fastapi dev` e che la variabile sia scritta senza spazi attorno a `=`.
 - **`fastapi: command not found`**: il venv non è attivo, oppure `uv sync` non è stato eseguito.
 - **Errori da LanceDB/Tantivy al primo avvio**: cancella la cartella `tmp/` e riavvia per rigenerare gli indici.
-
 ```
-
-
-
-
