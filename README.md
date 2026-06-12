@@ -77,7 +77,7 @@ Il server di sviluppo si avvia su `http://127.0.0.1:8000`. Endpoint utili:
 
 Al primo avvio l'agente:
 
-- crea il database SQLite in `tmp/recipebot.db`
+- crea il database SQLite in `tmp/technical_agent.db`
 - crea l'indice vettoriale LanceDB in `tmp/lancedb`
 - ingerisce i file di knowledge da [docs/](docs/)
 
