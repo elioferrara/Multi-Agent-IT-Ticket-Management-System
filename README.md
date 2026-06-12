@@ -1,0 +1,1 @@
+Sistema multi agente per la gestione di ticket informatici.

@@ -1,0 +1,22 @@
+# Carico le chiavi per i modelli
+from dotenv import load_dotenv
+load_dotenv()
+# Librerie Agno
+from agno.agent import Agent
+from agno.models.google import Gemini
+# Librerie personali
+from database.database import db
+
+# region technical_human.
+
+technical_human = Agent(
+    name="technical_human",
+    model=Gemini(id="gemini-2.5-flash"),
+    db=db,
+    instructions = ["Il tuo compito è simulare la chiamata ad un agente umano."
+                    "Ad ogni domanda devi rispondere con la seguente frase:"
+                    "'Presto un tecnico verrà ad aiutarti, rimani in attesa'"
+                    "Rispondi in italiano"
+    ],
+)
+# endregion
