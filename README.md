@@ -97,7 +97,7 @@ git rm -r --cached tmp
 
 ## Struttura del progetto
 
-```text
+```
 Agent_GestioneTicket/
 ├── agents/             # Definizione e logica degli agenti
 ├── database/           # Gestione dati e persistenza
@@ -108,11 +108,14 @@ Agent_GestioneTicket/
 ├── gestione_ticket.py  # Punto di ingresso principale (main)
 ├── pyproject.toml      # Definizione dipendenze (uv)
 ├── uv.lock             # Lockfile per versioni dipendenze
-└── .env                # Variabili d'ambiente (NON committare!)```
+└── .env                # Variabili d'ambiente (NON committare!)
+```
 
 ## Troubleshooting
 
+```
 - **`GOOGLE_API_KEY` non trovata**: verifica che `.env` esista nella stessa cartella da cui lanci `fastapi dev` e che la variabile sia scritta senza spazi attorno a `=`.
 - **`fastapi: command not found`**: il venv non è attivo, oppure `uv sync` non è stato eseguito.
 - **Errori da LanceDB/Tantivy al primo avvio**: cancella la cartella `tmp/` e riavvia per rigenerare gli indici.
+```
 
