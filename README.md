@@ -10,6 +10,7 @@ Questo progetto implementa un sistema multi-agente intelligente e modulare, prog
 - **[uv](https://docs.astral.sh/uv/)** come package manager
 - Una **API key di Google Gemini**
 - Una **API key di Groq**
+- Una **API key di Tavily**
 
 
 ## 1. Scaffolding iniziale (solo al primo setup di un progetto da zero)
@@ -57,6 +58,7 @@ Nella root del progetto crea un file `.env` con la chiave ottenuta al passo 1:
 ```dotenv
 GOOGLE_API_KEY=la-tua-chiave-qui
 GROQ_API_KEY=la-tua-chiave-qui
+TAVILY_API_KEY=
 ```
 
 Il file `.env` è già in [.gitignore](.gitignore): non verrà committato.
