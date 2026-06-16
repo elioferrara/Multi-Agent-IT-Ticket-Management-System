@@ -1,7 +1,7 @@
 from agno.db.sqlite import SqliteDb
 
 # Database per salvare le sessioni, lo possiamo usare per più agenti
-db=SqliteDb(db_file="tmp/technical_agent.db")
+db=SqliteDb(db_file="tmp/gestione_ticket.db")
 
 # Definisco un dizionario con key=ID dell 'utente e values una serie di attributi
 # ! Ipotetico DB contenente i dati degli utenti di un'azienda ! 

@@ -1,3 +1,9 @@
+# Carico le chiavi per i modelli
+import os
+from dotenv import load_dotenv
+load_dotenv()
+print("Chiave caricata:", os.getenv("GROQ_API_KEY")[:8] + "...")
+
 # Librerie Agno
 from agno.os import AgentOS
 
@@ -15,10 +21,12 @@ from database.database import db
 
 agent_os = AgentOS(
     name="technical_support_os",
-    agents=[technical_team_leader, retain_agent, technical_agent, technical_human, security_agent, compliance_agent],
+    agents=[technical_agent, technical_human, security_agent, compliance_agent, retain_agent],
     workflows=[research_workflow],
+    teams=[technical_team_leader],
     db=db,
     tracing=True,
 )
 
 app = agent_os.get_app()
+

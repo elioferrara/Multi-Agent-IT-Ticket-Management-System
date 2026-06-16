@@ -7,6 +7,8 @@ from agno.db.sqlite import SqliteDb
 from agno.knowledge import Knowledge
 from agno.learn import LearningMachine, LearningMode, LearnedKnowledgeConfig
 
+from database.database import db
+
 learnings_knowledge = Knowledge(
     vector_db=LanceDb(
         table_name="technical_human_knowledge",
@@ -17,7 +19,6 @@ learnings_knowledge = Knowledge(
 )
 
 
-db = SqliteDb(db_file="tmp/technical_agent.db")
 groq = Groq(id="openai/gpt-oss-20b")
 
 retain_agent = Agent(

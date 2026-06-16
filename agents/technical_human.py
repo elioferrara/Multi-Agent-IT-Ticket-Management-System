@@ -10,7 +10,7 @@ from database.database import db
 # region technical_human.
 
 technical_human = Agent(
-    name="technical_human",
+    name="technical-human",
     model=Gemini(id="gemini-2.5-flash"),
     db=db,
     instructions = ["Il tuo compito è simulare la chiamata ad un agente umano."

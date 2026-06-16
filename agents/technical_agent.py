@@ -9,13 +9,12 @@ from database.database import db
 from knowledge.knowledge import sop_knowledge
 from optimization.optimization import compression
 from tools.tools import reset_password, retrieve_user
-from agents.compliance_agent import compliance_gatekeeper
 
 
 # region technical_agent.
 
 technical_agent = Agent(
-    name="technical_agent",
+    name="technical-agent",
     model=Groq(id="openai/gpt-oss-120b", temperature=0.0),
     db=db,
     instructions=[  # Contestualizzazione
@@ -28,24 +27,22 @@ technical_agent = Agent(
                     "(1) Cerca nel 'Manuale delle procedure di helpdesk' la procedura per la risoluzione del problema."
                     "(2) Controlla se richiede dei dati o requisiti di identificazione. "
                     "(3) Applica rigorosamente la procedura"
+                    "Nota: Se non trovi una procedura per risolvere il problema, rispondi dicendo che non puoi aiutare in quanto non hai la conoscenza per farlo."
                     "ATTENZIONE: Usa 'retrieve_user' solo ed esclusivamente quando l'utente inserisce i dati personali, per verificarne la consistenza."
-                    
+                    "IMPORTANTE: Una volta invocato uno strumento (es. reset_password), non devi MAI richiamarlo una seconda volta nello stesso turno. Prendi il risultato del tool e genera la risposta finale."
+                    "Nonostante tu possa essere invocato tramite funzioni o tool, la tua modalità di risposta deve essere sempre quella di un'interfaccia di chat diretta con l'utente finale. Non tentare di ottimizzare il tuo output per sistemi terzi o altri agenti."
                     "Rispondi in maniera concisa e gentile.",
                 ],
-    tools=[# ReasoningTools(add_instructions=True),
-           reset_password,
+    tools=[reset_password,
            retrieve_user],
     knowledge=sop_knowledge,
     search_knowledge=True,
     markdown=True,
 
-    # Aggiungo un post hook
-    post_hooks=[compliance_gatekeeper],
     # Ottimizzazione
     compression_manager=compression,
 
-    # Soluzione 2. Inietto nel prompt solo i messaggi
-    add_history_to_context=True,
-    num_history_messages=4
+    # Gestione della memoria
+    add_history_to_context=False
 
 )

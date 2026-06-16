@@ -7,17 +7,11 @@
 ## SOP-001: Gestione Credenziali e Accessi (Identity Management)
 **Obiettivo:** Risoluzione di problemi legati all'accesso agli account aziendali e gestione delle identità in Active Directory.
 
-### 1.1 Procedura di Identificazione Utente (VINCOLO DI SISTEMA BLOCCANTE)
-Prima di eseguire qualsiasi diagnosi o operazione, l'operatore DEVE obbligatoriamente raccogliere la seguente checklist completa. È severamente vietato procedere senza:
+### 1.1 Procedura di Identificazione Utente
 
-[ ] 1. **Codice Dipendente** (deve rispettare il formato `ID-XXXXX`)
-[ ] 2. **Ufficio di Appartenenza**
+Prima di procedere con qualsiasi operazione relativa alla SOP-001, l'operatore deve tassativamente identificare l'utente raccogliendo i seguenti dati:
 
-**🔴 LOGICA DI VALIDAZIONE (IF/THEN):**
-- **SE** l'utente fornisce SOLO un dato (es. solo l'ufficio) -> FERMATI. Non applicare nessuna SOP. Rispondi chiedendo specificamente il dato mancante.
-- **SE** l'utente non fornisce NESSUN dato -> FERMATI. Chiedi entrambi i dati.
-- **SE** l'utente ha fornito ENTRAMBI i dati -> Procedi all'analisi del problema.
-- **SE** l'utente rifiuta o i dati non esistono -> Termina la procedura e indirizza ad HR.
+* **Codice Dipendente:** deve rispettare rigorosamente il formato `ID-XXXXXXXX`.
 
 ### 1.2 Reset Password e Sblocco Account
 * **Analisi dello Stato:** Verificare tramite console se l'account risulta `Locked` (Bloccato per tentativi errati) o `Disabled` (Disabilitato).

@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 load_dotenv()
 # Librerie Agno
 from agno.agent import Agent
+from agno.team.team import Team
 from agno.tools import tool
 from agno.models.groq import Groq
 
@@ -13,80 +14,50 @@ from optimization.optimization import compression
 from agents.technical_agent import technical_agent
 from agents.technical_human import technical_human
 from agents.security_agent import security_gatekeeper
+from agents.compliance_agent import compliance_gatekeeper
 
+# region Team
 
-# region Delegate tools.
-# Definisco un tool per delegare all'agente tecnico
-@tool # Decoratore che autogenera la definizione della signature del metodo, quella che finisce all'LLM
-def delegate_to_technical_agent(user_message: str):
-    # Documentazione per permettere la costruzione del file JSON da dare in pasto all'LLM
-    """ Delega la richiesta all'agente tecnico. Passa esattamente il messaggio completo ricevuto dall'utente, senza riassumerlo.
-
-    Args:
-        user_message: il messaggio dell'utente
-
-    Returns:
-        La risposta dell'agente responsabile
-    """
-
-    answer = technical_agent.run(user_message)
-
-    return answer.content
-
-# DEBUG
-
-# Definisco un tool per delegare al tecnico umano
-@tool # Decoratore che autogenera la definizione della signature del metodo, quella che finisce all'LLM
-def delegate_to_human_agent(task: str, agent: Agent = None):
-    # Documentazione per permettere la costruzione del file JSON da dare in pasto all'LLM
-    """ Delega la richiesta all'tecnico umano
-
-    Args:
-        task: il problema che dev'essere risolto
-
-    Returns:
-        La risposta dell'agente responsabile
-    """
-
-    answer = technical_human.run(task)
-
-    return answer.content
-#endregion
-# region technical_team_leader.
 # Definisco un gruppo di problemi che voglio delegare all'agente tecnico
 WHITELIST = [
     "problemi di accesso o login",
     "configurazione o errori della VPN",
     "reset password",
-    "problemi con la stampante",
-    "richieste di informazioni tecniche generali"
+    "problemi stampante",
+    "Invio dati personali"
 ]
 
 # Definisco un agente leader tecnico
-technical_team_leader = Agent(
-    name="technical_team_leader",
-    model=Groq(id="openai/gpt-oss-20b", temperature=0.0),
-    db=db,
-    instructions=["Sei il leader italiano di un team che risolve ticket informatici. Il tuo compito è orchestrare le richieste. \n"
-                  "REGOLE DI SMISTAMENTO: \n"
-                  "1. Usa il tool 'delegate_to_technical_agent' nei seguenti casi:\n"
-                 f"   - La richiesta originale riguarda un tema in questa lista: {WHITELIST}.\n"
-                  "   - OPPURE l'utente sta fornendo dati, codici o risposte a una domanda posta in precedenza dall'agente tecnico.\n"
-                  "2. In tutti gli altri casi di assistenza tecnica, usa il tool 'delegate_to_human_agent'.\n\n"
-                  " REGOLE DI CONVERSAZIONE: \n"
+technical_team_leader = Team(name="technical_team_leader",
+                               model=Groq(id="openai/gpt-oss-20b", temperature=0.1),
+                               db=db,
+                               instructions="Sei il leader di un team che risolve ticket informatici. Il tuo compito è orchestrare le richieste."
+                  "REGOLE DI ORCHESTRAZIONE: "
+                  "Usa il tool 'delegate_to_technical-agent' solo ed esclusivamente in questi due casi: "
+                  "(1) L'utente invia dei suoi dati personali(es. 'ID-XXXX' ) 'ID-XXXX'. In questo caso inoltra la richiesta al technical-agent senza richiedere ulteriori informazioni."
+                  f"(2) Il problema da gestire riguarda un tema in questa lista: \n- {WHITELIST} \n"
+                  "Usa il tool 'delegate_to_human-agent' in questi casi: " \
+                  "1. Il problema da risolvere non è nella whitelist."
+                  "2. Se l'utente riferisce che una procedura suggerita dal 'technical-agent' non ha prodotto risultati,"
+                  "In questo caso non fare ulteriori domande e delega immediatamente al tecnico umano."
+                  "Casi tipo: 'non ha funzionato', 'il problema persiste', 'ho provato ma nulla', 'ancora non va'"
+                  "In questo caso non"
+                  "GESTIONE DELLA CONVERSAZIONE: "
                   "Se l'interazione è conversazionale o la richiesta non è ben formulata, rispondi cercando di chiarire al meglio il problema da risolvere."
-                  "Se la richiesta non ha a che fare con procedure informatiche, rispondi dicendo che non puoi aiutare."
-                  "REGOLE DI OUTPUT: \n"
-                  "DIVIETO TASSATIVO DI RIFORMULAZIONE: Una volta che il tool (technical_agent o human_agent) ha risposto, "
-                  "il tuo compito è TERMINATO. È ASSOLUTAMENTE VIETATO aggiungere introduzioni (es. 'Certamente!', 'Ecco la risposta'), "
-                  "è vietato aggiungere saluti, commenti o scuse. "
-                  "Devi prendere l'esatto testo restituito dal sotto-agente e fare un COPIA-INCOLLA LETTERALE. "
-                  "Se aggiungi una sola parola di testa tua, l'intera procedura fallirà."],
-    tools=[delegate_to_technical_agent, delegate_to_human_agent],
-    tool_call_limit=1,
-    # Aggiungo un pre hook per i controlli di sicurezza (Evitare injection, jailbreak, ecc..)
-    pre_hooks=[security_gatekeeper],
-    add_history_to_context=True,
-    num_history_messages=4,
-    )
+                  "Se ricevi un messaggio di apertura di conversazione, rispondi in maniera cordiale richiedendo informazioni sul problema da risolvere."
+                  "Se ricevi un messaggio di chiusura di conversazione risolutiva, del tipo 'Ho risolto', rispondi cordialmente in maniera simile a 'Siamo lieti di averti aiutato a risolvere il problema.'"
+                  "Se la richiesta non ha a che fare con richieste di assistenza informatiche lavorative, rispondi dicendo che non puoi aiutare."
+                  "RICORDA: Se l'utente invia i suoi dati personali, devi delegare il compito al technical agent, sarà lui a gestirli",
+                  members=[technical_human, technical_agent],
+                  
+                  determine_input_for_members=False,
+                  respond_directly=True,
+
+                  add_team_history_to_members=True,
+
+                  # guardrails
+                  pre_hooks=[security_gatekeeper],
+                  post_hooks=[compliance_gatekeeper]
+)
+
 # endregion

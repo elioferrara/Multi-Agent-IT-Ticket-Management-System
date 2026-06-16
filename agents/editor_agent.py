@@ -23,6 +23,8 @@ from agno.tools.hackernews import HackerNewsTools
 from agno.tools.duckduckgo import DuckDuckGoTools """
 from agno.tools.tavily import TavilyTools
 
+from database.database import db
+
 groq = Groq(id="openai/gpt-oss-120b")
 mistral = MistralChat(id="mistral-large-latest")
 gemini = Gemini(id="gemini-2.5-flash-lite")
@@ -30,11 +32,10 @@ gemini = Gemini(id="gemini-2.5-flash-lite")
 # Seleziono una lista di siti affidabili da cui ricavare informazioni su vulnerabilità
 reliable_sites="https://atlas.mitre.org/"
 
-db= SqliteDb(db_file="tmp/editor_agent.db")
-
 research_agent = Agent(
     name='editor_agent',
     model=groq,
+    db=db,
     instructions=[
     "Sei un Detection Engineer ed esperto di Cyber Security specializzato nella difesa di LLM e sistemi multi-agente.",
     "Il tuo unico compito è cercare su internet nuove tecniche di attacco, varianti di jailbreak, prompt injection o exploit emergenti rivolti agli LLM.",
@@ -101,14 +102,3 @@ editor_agent.print_response(
     markdown=True
 )
 """
-
-
-agent_os = AgentOS(
-    name="editor_agent",
-    agents=[research_agent],
-    workflows=[research_workflow],
-    db=db,
-    tracing=True,
-)
-
-app = agent_os.get_app()
