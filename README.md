@@ -58,7 +58,7 @@ Nella root del progetto crea un file `.env` con la chiave ottenuta al passo 1:
 ```dotenv
 GOOGLE_API_KEY=la-tua-chiave-qui
 GROQ_API_KEY=la-tua-chiave-qui
-TAVILY_API_KEY=
+TAVILY_API_KEY=la-tua-chiave-qui
 ```
 
 Il file `.env` è già in [.gitignore](.gitignore): non verrà committato.
