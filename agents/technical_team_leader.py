@@ -41,7 +41,6 @@ technical_team_leader = Team(name="technical_team_leader",
                   "2. Se l'utente riferisce che una procedura suggerita dal 'technical-agent' non ha prodotto risultati,"
                   "In questo caso non fare ulteriori domande e delega immediatamente al tecnico umano."
                   "Casi tipo: 'non ha funzionato', 'il problema persiste', 'ho provato ma nulla', 'ancora non va'"
-                  "In questo caso non"
                   "GESTIONE DELLA CONVERSAZIONE: "
                   "Se l'interazione è conversazionale o la richiesta non è ben formulata, rispondi cercando di chiarire al meglio il problema da risolvere."
                   "Se ricevi un messaggio di apertura di conversazione, rispondi in maniera cordiale richiedendo informazioni sul problema da risolvere."
