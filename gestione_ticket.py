@@ -2,7 +2,6 @@
 import os
 from dotenv import load_dotenv
 load_dotenv()
-print("Chiave caricata:", os.getenv("GROQ_API_KEY")[:8] + "...")
 
 # Librerie Agno
 from agno.os import AgentOS
